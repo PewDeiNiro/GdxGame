@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class Player {
+public class Player extends GameObject{
 
     private Texture texture;
     private int x, y;
