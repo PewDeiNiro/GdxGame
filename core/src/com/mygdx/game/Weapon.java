@@ -1,6 +1,11 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Texture;
+
+import javax.management.monitor.Monitor;
+import java.awt.*;
 
 public class Weapon extends GameObject{
 
@@ -16,6 +21,7 @@ public class Weapon extends GameObject{
         this.y = y;
         this.player = player;
         isAlive = true;
+
     }
 
     public Texture getTexture(){
@@ -55,6 +61,9 @@ public class Weapon extends GameObject{
         if (y <= 1 || checkCollision()){
             die();
         }
+        if (y <= 1){
+            player.setCount(0);
+        }
     }
 
     private void fall(){
@@ -69,8 +78,8 @@ public class Weapon extends GameObject{
     }
 
     private boolean checkCollision(){
-        if (Math.abs(x - player.getX()) <= 50 && Math.abs(y - player.getY()) <= 50){
-            System.out.println("collision");
+        if (Math.abs(x - player.getX()) <= 50 && Math.abs(y - player.getY()) <= 130){
+            player.setCount(player.getCount() + 1);
             return true;
         }
         return false;
