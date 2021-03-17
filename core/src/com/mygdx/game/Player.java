@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 
 import javax.xml.soap.Text;
+import java.util.ArrayList;
 
 public class Player extends GameObject{
 
@@ -12,6 +13,7 @@ public class Player extends GameObject{
     private String side;
     public final String LEFT = "left", RIGHT = "right";
     private int count;
+    private ArrayList<Patron> patrons = new ArrayList<>();
 
     public Player(Texture textureLeft, Texture textureRight, int x, int y){
         this.textureLeft = textureLeft;
@@ -59,6 +61,31 @@ public class Player extends GameObject{
 
     public void setCount(int count){
         this.count = count;
+    }
+
+    public void shoot(){
+        if (count > 0){
+            Patron patron = new Patron(new Texture("weapon.png"), x, y, side);
+            patrons.add(patron);
+        }
+    }
+
+    public void flyPatrons(){
+        for (int i = 0; i < patrons.size(); i++){
+            Patron patron = patrons.get(i);
+            if (patron.isAlive()){
+                if (patron.getSide().equals(LEFT)){
+                    patron.setLocation(patron.getX() - patron.getSPEED(), patron.getY());
+                }
+                else{
+                    patron.setLocation(patron.getX() + patron.getSPEED(), patron.getY());
+                }
+                MyGdxGame.batch.draw(patron.getTexture(), patron.getX(), patron.getY());
+            }
+            else{
+                patrons.remove(i);
+            }
+        }
     }
 
 }

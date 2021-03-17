@@ -18,16 +18,13 @@ import java.util.Calendar;
 
 public class MyGdxGame extends ApplicationAdapter {
 
-	SpriteBatch batch;
-	Texture img;
+	static SpriteBatch batch;
 	Player player;
 	ArrayList<Weapon> weapons = new ArrayList<>();
 	Label counter;
 	
 	@Override
 	public void create () {
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		//Gdx.graphics.setFullscreenMode(new Graphics.DisplayMode(gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight(), gd.getDisplayMode().getRefreshRate(), gd.getDisplayMode().getBitDepth()));
 		player = new Player(new Texture("playerLeft.png"), new Texture("playerRight.png"),300, 0);
 		batch = new SpriteBatch();
 		counter = new Label("0", new Label.LabelStyle(new BitmapFont(), Color.RED));
@@ -64,6 +61,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		counter.setText(player.getCount() + "");
 		counter.draw(batch, 1);
+		player.flyPatrons();
 		batch.end();
 	}
 
@@ -81,6 +79,12 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 		else if (player.getX() > 550){
 			player.setX(550);
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+			dispose();
+		}
+		if (true){
+			player.shoot();
 		}
 	}
 	
