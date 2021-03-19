@@ -76,6 +76,9 @@ public class MyGdxGame extends ApplicationAdapter {
 		for (Patron patron : patrons){
 			patron.flyPatron();
 			batch.draw(patron.getTexture(), patron.getX(), patron.getY());
+			if (patron.getX() < 20 || patron.getX() > 620){
+				patron.dead();
+			}
 		}
 		highscore = Math.max(highscore, player.getCount());
 		batch.end();
