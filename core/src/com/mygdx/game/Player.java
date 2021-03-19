@@ -67,25 +67,18 @@ public class Player extends GameObject{
         if (count > 0){
             Patron patron = new Patron(new Texture("weapon.png"), x, y, side);
             patrons.add(patron);
+            count--;
         }
     }
 
-    public void flyPatrons(){
+    public ArrayList<Patron> getPatrons(){
         for (int i = 0; i < patrons.size(); i++){
             Patron patron = patrons.get(i);
-            if (patron.isAlive()){
-                if (patron.getSide().equals(LEFT)){
-                    patron.setLocation(patron.getX() - patron.getSPEED(), patron.getY());
-                }
-                else{
-                    patron.setLocation(patron.getX() + patron.getSPEED(), patron.getY());
-                }
-                MyGdxGame.batch.draw(patron.getTexture(), patron.getX(), patron.getY());
-            }
-            else{
+            if (!patron.isAlive()){
                 patrons.remove(i);
             }
         }
+        return patrons;
     }
 
 }

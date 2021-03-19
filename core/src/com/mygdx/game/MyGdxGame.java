@@ -18,11 +18,17 @@ import java.util.Calendar;
 
 public class MyGdxGame extends ApplicationAdapter {
 
-	static SpriteBatch batch;
+	SpriteBatch batch;
 	Player player;
 	ArrayList<Weapon> weapons = new ArrayList<>();
 	Label counter;
-	
+	int cooldown = 0;
+	int highscore;
+	int spawnTimer;
+	boolean cheatMode = false;
+	int cheatCooldown = 0;
+
+
 	@Override
 	public void create () {
 		player = new Player(new Texture("playerLeft.png"), new Texture("playerRight.png"),300, 0);
@@ -44,15 +50,20 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(new Texture("background.png"), 0, 0);
 		batch.draw(player.getTexture(), player.getX(), player.getY());
-		int random = (int)(Math.random() * 200 + 1);
-		if (random == 10){
+		spawnTimer++;
+		if (spawnTimer % 240 == 0){
 			Weapon weapon  = new Weapon(new Texture("weapon.png"), (int)(Math.random() * 600 + 1), 500, player);
 			weapons.add(weapon);
+			spawnTimer = 0;
 		}
 		for (int i = 0; i < weapons.size(); i++){
 		    Weapon weapon = weapons.get(i);
-		    if (weapon.isAlive()){
-				batch.draw(weapon.getTexture(), weapon.getX(), weapon.getY());
+		    if (weapon.isAlive() && cheatMode){
+		    	weapon.setX(weapon.getX() > player.getX() ? weapon.getX() - 3 : weapon.getX() + 3);
+				batch.draw(weapon.getTexture(),weapon.getX() , weapon.getY());
+			}
+		    else if (weapon.isAlive() && !cheatMode){
+		    	batch.draw(weapon.getTexture(), weapon.getX(), weapon.getY());
 			}
 		    else{
 		    	weapons.remove(i);
@@ -61,7 +72,12 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		counter.setText(player.getCount() + "");
 		counter.draw(batch, 1);
-		player.flyPatrons();
+		ArrayList<Patron> patrons = player.getPatrons();
+		for (Patron patron : patrons){
+			patron.flyPatron();
+			batch.draw(patron.getTexture(), patron.getX(), patron.getY());
+		}
+		highscore = Math.max(highscore, player.getCount());
 		batch.end();
 	}
 
@@ -83,8 +99,20 @@ public class MyGdxGame extends ApplicationAdapter {
 		if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
 			dispose();
 		}
-		if (true){
+		if (Gdx.input.isTouched() && cooldown == 0){
 			player.shoot();
+			cooldown = 1;
+		}
+		else if (!Gdx.input.isTouched()){
+			cooldown = 0;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.X) && Gdx.input.isKeyPressed(Input.Keys.B) && Gdx.input.isKeyPressed(Input.Keys.N) && cheatCooldown == 0){
+			cheatMode = !cheatMode;
+			System.out.println("Cheat = " + cheatMode);
+			cheatCooldown = 1;
+		}
+		else if (!(Gdx.input.isKeyPressed(Input.Keys.X) && Gdx.input.isKeyPressed(Input.Keys.B) && Gdx.input.isKeyPressed(Input.Keys.N))){
+			cheatCooldown = 0;
 		}
 	}
 	

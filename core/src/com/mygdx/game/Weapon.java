@@ -14,6 +14,7 @@ public class Weapon extends GameObject{
     private boolean isAlive;
     private final int G = 3;
     private Player player;
+    public static boolean cheatMode;
 
     public Weapon(Texture texture, int x, int y, Player player){
         this.texture = texture;

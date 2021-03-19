@@ -9,7 +9,7 @@ public class Patron {
     private Texture texture;
     private String side;
     private boolean isAlive;
-    private final int SPEED = 6;
+    private final int SPEED = 8;
 
     public Patron(Texture texture, int x, int y, String side){
         this.texture = texture;
@@ -62,6 +62,15 @@ public class Patron {
 
     public int getSPEED(){
         return SPEED;
+    }
+
+    public void flyPatron(){
+        if (side.equals(LEFT)){
+            x -= SPEED;
+        }
+        else{
+            x += SPEED;
+        }
     }
 
 
