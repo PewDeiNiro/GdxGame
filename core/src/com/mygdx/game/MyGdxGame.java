@@ -21,7 +21,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Player player;
 	ArrayList<Weapon> weapons = new ArrayList<>();
-	Label counter;
+	Label counter, highscoreLabel;
 	int cooldown = 0;
 	int highscore;
 	int spawnTimer;
@@ -34,9 +34,11 @@ public class MyGdxGame extends ApplicationAdapter {
 		player = new Player(new Texture("playerLeft.png"), new Texture("playerRight.png"),300, 0);
 		batch = new SpriteBatch();
 		counter = new Label("0", new Label.LabelStyle(new BitmapFont(), Color.RED));
+		highscoreLabel = new Label("0", new Label.LabelStyle(new BitmapFont(), Color.GREEN));
 		counter.setX(600);
 		counter.setY(450);
-
+		highscoreLabel.setX(600);
+		highscoreLabel.setY(420);
 	}
 
 	@Override
@@ -72,6 +74,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		counter.setText(player.getCount() + "");
 		counter.draw(batch, 1);
+		highscoreLabel.draw(batch, 1);
 		ArrayList<Patron> patrons = player.getPatrons();
 		for (Patron patron : patrons){
 			patron.flyPatron();
@@ -81,6 +84,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			}
 		}
 		highscore = Math.max(highscore, player.getCount());
+		highscoreLabel.setText(highscore + "");
 		batch.end();
 	}
 
